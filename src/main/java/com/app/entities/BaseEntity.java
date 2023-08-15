@@ -18,6 +18,4 @@ public class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Version // for adding version-based optimistic concurrency control
-	private int version;
 }
