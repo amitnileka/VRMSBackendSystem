@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -44,7 +45,7 @@ public class UserEntity extends BaseEntity {
 	
 	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL
 			, orphanRemoval = true)
-	private List<BookingDetailsEntity> bookings;
+	private List<BookingDetailsEntity> bookings = new ArrayList<>();
 	
 	
 }
