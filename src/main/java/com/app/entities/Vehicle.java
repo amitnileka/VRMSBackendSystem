@@ -27,29 +27,29 @@ import lombok.ToString;
 public class Vehicle extends BaseEntity{
 	
 	@Column(length=20,unique=true)
-	private String carNo;
-	@Column(length=50)
-	private String carName;
+	private String vehicleNo;
 	@Column(length=20)
 	private String fuelType;
 	@Column(length=10)
 	private String passingYear;
-	private boolean available;
+	@Column(length=10)
+	private String status;
 	
-	private Integer pricingPerKm;
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private VehicleType type;
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name = "brand_id")
 	private VehicleBrand brand;
 	
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	@ManyToOne
 	private ServiceLocationEntity serviceLocation;
 
+	
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(carNo);
+		return Objects.hash(vehicleNo);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Vehicle extends BaseEntity{
 		if (getClass() != obj.getClass())
 			return false;
 		Vehicle other = (Vehicle) obj;
-		return Objects.equals(carNo, other.carNo);
+		return Objects.equals(vehicleNo, other.vehicleNo);
 	}
 
 }

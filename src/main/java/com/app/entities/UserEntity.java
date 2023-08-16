@@ -32,9 +32,7 @@ public class UserEntity extends BaseEntity {
 	private String email;
 	@Column(length = 300, nullable = false)
 	private String password;
-	@Enumerated(EnumType.STRING)
-	@Column(length = 30)
-	private UserRole role;
+	
 
 	private int age;
 	@Column(name="mobile_no",length = 15)	
