@@ -1,5 +1,8 @@
 package com.app.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -42,5 +45,18 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 		return new ApiResponse("location deleted");
 	}
 	
+	
+	@Override
+	public List<ServiceLocationDto> getAllLocations() {
+	
+		List<ServiceLocationEntity> serviceLocations = locationRepository.findAll();
+		
+		List<ServiceLocationDto> serviceLocationDtos = serviceLocations.stream() //Stream<Emp>
+				.map(service -> mapper.map(service, ServiceLocationDto.class)) //Stream<DTO>
+				.collect(Collectors.toList());
+		
+		
+		return serviceLocationDtos;
+	}
 	
 }

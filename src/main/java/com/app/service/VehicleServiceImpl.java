@@ -62,7 +62,13 @@ public class VehicleServiceImpl implements VehicleService {
 	
 	@Override
 	public ApiResponse deleteVehicle(Long id) {
-		return null;
+		
+		Vehicle vehicle = vehicleRepo.findById(id).orElseThrow(()-> new RuntimeException("vehicle not found"));
+
+		vehicleRepo.delete(vehicle);
+		
+		return new ApiResponse("vehicle deleted");
+		
 	}
 	
 }
