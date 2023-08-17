@@ -48,4 +48,6 @@ public class UserEntity extends BaseEntity {
 	private List<BookingDetailsEntity> bookings = new ArrayList<>();
 	
 	
+	
+	
 }

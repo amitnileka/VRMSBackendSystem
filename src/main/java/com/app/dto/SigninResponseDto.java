@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SigninResponseDto {
+	private Long id;
 	private String jwt;
 	private String mesg;
 }
