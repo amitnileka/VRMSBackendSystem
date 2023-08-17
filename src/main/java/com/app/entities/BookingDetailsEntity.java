@@ -21,7 +21,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BookingDetailsEntity extends BaseEntity {
+public class BookingDetailsEntity extends BaseEntity { 
 
 	private LocalDate bookDate;
 	private LocalDate startDate;
