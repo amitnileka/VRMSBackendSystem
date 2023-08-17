@@ -21,15 +21,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AddVehicalDto {
+	
 	private String vehicleNo;
 	private String fuelType;
 	private String passingYear;
 	private String status;
-	
 	private Long typeId;
-
-	
 	private Long brandId;
-	
 	private Long serviceLocationId;
 }

@@ -47,7 +47,6 @@ public class ServiceLocationController {
 	@GetMapping
 	public List<ServiceLocationDto> getAllLocations(){
 		
-		
 		return locationService.getAllLocations();
 		
 		
