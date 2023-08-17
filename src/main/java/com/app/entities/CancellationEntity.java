@@ -25,8 +25,8 @@ public class CancellationEntity extends BaseEntity{
 	
 	@Column(length=300)
 	private String reason;
-	@Column(length=30)
-	private double charges;
+	
+	private Double refundableAmount;
 	
 	private LocalDate timestamp;
 	

@@ -26,13 +26,13 @@ import lombok.ToString;
 @ToString(exclude = {"type","brand","serviceLocation"})
 public class Vehicle extends BaseEntity{
 	
-	@Column(length=20,unique=true)
+	@Column(length=30,unique=true)
 	private String vehicleNo;
-	@Column(length=20)
+	@Column(length=30)
 	private String fuelType;
 	@Column(length=10)
 	private String passingYear;
-	@Column(length=10)
+	@Column(length=30)
 	private String status;
 	
 	@ManyToOne

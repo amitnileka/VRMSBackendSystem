@@ -8,25 +8,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class BookingDto {
+public class AllCancelledBookingDto {
 
-	private LocalDate bookDate;
-	private LocalDate startDate;
-	private LocalDate endDate;
 	
-	private Double amount;
-	private Double extraCharge;
+	private String reason;
 	
-	private Double totalAmount;
+	private Double refundableAmount;
 	
+	private LocalDate timestamp;
 	
-	private String status;
-	
-	private Long vehicleId;
-	
+	private BookingResponseDto bookingDto;
+
 }
