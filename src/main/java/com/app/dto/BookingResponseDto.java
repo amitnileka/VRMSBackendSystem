@@ -14,7 +14,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BookingResponseDto {
-
+	
+	private Long id;
 	private LocalDate bookDate;
 	private LocalDate startDate;
 	private LocalDate endDate;

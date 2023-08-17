@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,13 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.dao.BookingRepository;
+import com.app.dao.CancelBookingRepository;
+import com.app.dao.PaymentRepository;
 import com.app.dao.UserRepository;
+import com.app.dao.VehicleRepository;
 import com.app.dto.ApiResponse;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingResponseDto;
+import com.app.dto.CancelBookingDto;
 import com.app.dto.ProfileDto;
 import com.app.entities.BookingDetailsEntity;
+import com.app.entities.CancellationEntity;
+import com.app.entities.PaymentDetailsEntity;
 import com.app.entities.UserEntity;
+import com.app.entities.Vehicle;
 
 @Service
 @Transactional
@@ -27,22 +35,34 @@ public class BookingServiceImpl implements BookingService {
 	private ModelMapper mapper;
 	
 	@Autowired
-	private BookingRepository bookingDao;
+	private BookingRepository bookingRepo;
 	
 	@Autowired
-	private UserRepository userDao;
+	private UserRepository userRepo;
 	
+	@Autowired
+	private VehicleRepository vehicleRepo;
+	
+	@Autowired
+	private CancelBookingRepository cancelBookingRepo;
+	
+	@Autowired
+	private PaymentRepository paymentRepo;
 	
 	@Override
 	public ApiResponse addBookingDetails(BookingDto bookingDto, Long userId) {
-		// TODO Auto-generated method stub
 		
 		
-		UserEntity users= userDao.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
+		
+		UserEntity users= userRepo.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
+		Vehicle vehicle = vehicleRepo.findById(bookingDto.getVehicleId()).orElseThrow(()-> new RuntimeException("vehicle not found"));
 		BookingDetailsEntity booking= mapper.map(bookingDto, BookingDetailsEntity.class);
-		
+		vehicle.setStatus("NotAvailable");
+		booking.setVehicle(vehicle);
 		booking.setUsers(users);
-		BookingDetailsEntity bookingEntity= bookingDao.save(booking);
+		
+		
+		BookingDetailsEntity bookingEntity= bookingRepo.save(booking);
 		
 		
 		
@@ -53,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
   @Override
 	public List<BookingDto> getMyBookings(Long userId) {
 		// TODO Auto-generated method stub
-	  UserEntity users= userDao.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
+	  UserEntity users= userRepo.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
 		List<BookingDetailsEntity> bookingEntity=users.getBookings();
 		
 		
@@ -65,9 +85,8 @@ public class BookingServiceImpl implements BookingService {
 	  
 	  @Override
 	public List<BookingResponseDto> getAllBookings() {
-		// TODO Auto-generated method stub
-		  
-		List<BookingDetailsEntity> bookingEntities=bookingDao.findAll();
+		 
+		List<BookingDetailsEntity> bookingEntities=bookingRepo.findAll();
 		List<BookingResponseDto> bookingDto=bookingEntities.stream().map(booking-> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
 		
 		for(int i=0;i<bookingEntities.size();i++) {
@@ -77,10 +96,35 @@ public class BookingServiceImpl implements BookingService {
 		return bookingDto;
 	}
 	  
-//	  @Override
-//	public ApiResponse cancelBooking(Long bookingId) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public ApiResponse cancelBooking(CancelBookingDto cancelDto) {
+	
+		
+		BookingDetailsEntity booking = bookingRepo.findById(cancelDto.getBookingId())
+										.orElseThrow(()->new RuntimeException("booking details not found"));
+		
+		
+		PaymentDetailsEntity payment = paymentRepo.findById(cancelDto.getBookingId())
+				.orElseThrow(()->new RuntimeException("payment details not found"));
+		
+		
+		Vehicle vehicle = vehicleRepo.findById(booking.getVehicle().getId())
+				.orElseThrow(()->new RuntimeException("vehicle not found"));
+		
+		
+		CancellationEntity cancellationEntry = mapper.map(cancelDto, CancellationEntity.class);
+		
+		booking.setStatus("Cancelled");
+		vehicle.setStatus("Available");
+		cancellationEntry.setBooking(booking);
+		cancellationEntry.setTransaction(payment);
+		cancellationEntry.setRefundableAmount(booking.getAmount()*0.90);
+		cancellationEntry.setTimestamp(LocalDate.now());
+		
+		
+		cancelBookingRepo.save(cancellationEntry);
+		
+		return new ApiResponse("Booking cancelled succesfully");
+	}
 
 }
