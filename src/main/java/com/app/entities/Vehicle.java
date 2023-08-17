@@ -40,7 +40,7 @@ public class Vehicle extends BaseEntity{
 	private VehicleType type;
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
-	private VehicleBrand brand;
+	private VehicleBrand brand; 
 	
 	@ManyToOne
 	private ServiceLocationEntity serviceLocation;
