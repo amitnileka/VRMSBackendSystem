@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.AddBookingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingResponseDto;
@@ -28,7 +29,7 @@ public class BookingController {
 	
 
 	@PostMapping("/addbooking/{userId}")
-	public ApiResponse addBookingDetails(@RequestBody BookingDto booking, @PathVariable Long userId) {
+	public ApiResponse addBookingDetails(@RequestBody AddBookingDto booking, @PathVariable Long userId) {
 		
 		
 		return bookingService.addBookingDetails(booking,userId);
