@@ -17,9 +17,11 @@ import com.app.dao.PaymentRepository;
 import com.app.dao.UserRepository;
 import com.app.dao.VehicleRepository;
 import com.app.dto.AddBookingDto;
+import com.app.dto.AddFeedbackToBookingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingResponseDto;
+import com.app.dto.BookingWithFeedbackDto;
 import com.app.dto.CancelBookingDto;
 import com.app.dto.ProfileDto;
 import com.app.entities.BookingDetailsEntity;
@@ -125,6 +127,32 @@ public class BookingServiceImpl implements BookingService {
 		cancelBookingRepo.save(cancellationEntry);
 		
 		return new ApiResponse("Booking cancelled succesfully");
+	}
+		
+	@Override
+	public List<BookingWithFeedbackDto> getAllBookingsWithFeedback() {
+		// TODO Auto-generated method stub
+		List<BookingDetailsEntity> bookingEntities=bookingRepo.findAll();
+		List<BookingWithFeedbackDto> bookingDto=bookingEntities.stream().map(booking-> mapper.map(booking, BookingWithFeedbackDto.class)).collect(Collectors.toList());
+		
+		for(int i=0;i<bookingEntities.size();i++) {
+			bookingDto.get(i).setUser(mapper.map(bookingEntities.get(i).getUsers(), ProfileDto.class));
+		}
+		
+		return bookingDto;
+	}
+	
+	@Override
+	public ApiResponse addFeedbackToBooking(AddFeedbackToBookingDto addFeedbackToBookingDto) {
+		// TODO Auto-generated method stub
+		BookingDetailsEntity booking = bookingRepo.findById(addFeedbackToBookingDto.getBookingId()).orElseThrow(()-> new RuntimeException("No such Booking"));
+		
+		booking.setBookingFeedback(addFeedbackToBookingDto.getBookingFeedback());
+		booking.setRating(addFeedbackToBookingDto.getRating());
+		
+		bookingRepo.save(booking);
+		
+		return new ApiResponse("Feedback added!!");
 	}
 
 }
