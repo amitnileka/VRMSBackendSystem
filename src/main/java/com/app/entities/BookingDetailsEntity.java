@@ -44,4 +44,8 @@ public class BookingDetailsEntity extends BaseEntity {
 	@JoinColumn(name="user_id")
 	private UserEntity users;
 	
+	@Column(length=300)
+	private String bookingFeedback;
+
+	private Integer rating;
 }

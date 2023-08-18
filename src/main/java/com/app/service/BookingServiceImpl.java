@@ -16,6 +16,7 @@ import com.app.dao.CancelBookingRepository;
 import com.app.dao.PaymentRepository;
 import com.app.dao.UserRepository;
 import com.app.dao.VehicleRepository;
+import com.app.dto.AddBookingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingResponseDto;
@@ -50,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
 	private PaymentRepository paymentRepo;
 	
 	@Override
-	public ApiResponse addBookingDetails(BookingDto bookingDto, Long userId) {
+	public ApiResponse addBookingDetails(AddBookingDto bookingDto, Long userId) {
 		
 		
 		
@@ -80,7 +81,6 @@ public class BookingServiceImpl implements BookingService {
 		List<BookingDto> bookingDto=bookingEntity.stream().map(booking-> mapper.map(booking, BookingDto.class)).collect(Collectors.toList());
 		
 		return bookingDto;
-		
 	}
 	  
 	  @Override
