@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SigninRequestDto {
+public class CredentialsRequestDto {
 	
 //	@NotBlank(message = "Email can't be blank")
 //	@Email(message = "Invalid email format")

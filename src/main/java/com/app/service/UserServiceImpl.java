@@ -13,8 +13,8 @@ import com.app.dao.UserRepository;
 import com.app.dto.ApiResponse;
 import com.app.dto.ChangePasswordDto;
 import com.app.dto.RegisterUserDto;
-import com.app.dto.SigninRequestDto;
-import com.app.dto.SigninResponseDto;
+import com.app.dto.CredentialsRequestDto;
+import com.app.dto.CredentialsResponseDto;
 import com.app.dto.ProfileDto;
 import com.app.entities.UserEntity;
 
@@ -40,13 +40,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public SigninResponseDto getValidUser(SigninRequestDto loginUserDto) {
+	public CredentialsResponseDto getValidUser(CredentialsRequestDto loginUserDto) {
 		String email = loginUserDto.getEmail();
 		String password = loginUserDto.getPassword();
-		UserEntity user = userRepo.findByEmailAndPassword(email, password);
+		UserEntity user = userRepo.findByEmailAndPassword(email, password)
+				.orElseThrow(()-> new RuntimeException("Invalid User Email or Password"));
 		
-		return user != null ? new SigninResponseDto(user.getId(),"jwt","Sign In Successfull") : 
-			new SigninResponseDto(null,"Nojwt","Sign In Unsuccessfull");
+		return user != null ? new CredentialsResponseDto(user.getId(),"jwt","Sign In Successfull") : 
+			new CredentialsResponseDto(null,"Nojwt","Sign In Unsuccessfull");
 	}
 	
 	@Override
@@ -95,4 +96,25 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
+	
+	@Override
+	public ApiResponse getValidUserByEmail(String email) {
+		UserEntity user= userRepo.findByEmail(email)
+							.orElseThrow(() -> new RuntimeException("Not a Valid User Email"));
+	   return user != null ? new ApiResponse("Valid User") : new ApiResponse("Invalid User");
+	}
+	
+	@Override
+	public ApiResponse updateForgotPasswordOfUser(CredentialsRequestDto userDto) {
+		System.out.println(userDto.getEmail());
+		UserEntity user = userRepo.findByEmail(userDto.getEmail())
+				.orElseThrow(() -> new RuntimeException("Not a Valid User Email"));
+		if(user != null) {
+			user.setPassword(userDto.getPassword());
+			return new ApiResponse("Password Added Successfully");
+		}else {
+			return new ApiResponse("Invalid Email");
+		}
+		
+	}
 }

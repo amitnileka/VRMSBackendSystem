@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SigninResponseDto {
+public class CredentialsResponseDto {
 	private Long id;
 	private String jwt;
 	private String mesg;

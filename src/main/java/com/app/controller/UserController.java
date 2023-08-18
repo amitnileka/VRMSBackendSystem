@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.ApiResponse;
 import com.app.dto.ChangePasswordDto;
 import com.app.dto.RegisterUserDto;
-import com.app.dto.SigninRequestDto;
-import com.app.dto.SigninResponseDto;
+import com.app.dto.CredentialsRequestDto;
+import com.app.dto.CredentialsResponseDto;
 import com.app.dto.ProfileDto;
 import com.app.service.UserService;
 
@@ -36,16 +36,16 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public SigninResponseDto signInUser(@RequestBody @Valid SigninRequestDto userDto){
+	public CredentialsResponseDto signInUser(@RequestBody @Valid CredentialsRequestDto userDto){
 		return userService.getValidUser(userDto);
 	}
 	
-	@GetMapping("/get_all_users")
+	@GetMapping("/getAllUsers")
 	public List<ProfileDto> getAllUsers(){
 		return userService.getUsers();
 	}
 	
-	@PutMapping("/update_profile")
+	@PutMapping("/updateProfile")
 	public ApiResponse updateUserProfile(@RequestBody @Valid ProfileDto profileDto){
 		return userService.editUserProfile(profileDto);
 	}
@@ -55,9 +55,21 @@ public class UserController {
 		return userService.getUserById(id);
 	}
 	
-	@PostMapping("/change_password")
+	@PostMapping("/changePassword")
 	public ApiResponse changePasswordOfUser(@RequestBody @Valid ChangePasswordDto passwordDto) {
 		return userService.changePassword(passwordDto);
 	}
+	
+	@PostMapping("/forgotPassword")
+	public ApiResponse validateUserByEmail(@RequestBody String email) {
+		return userService.getValidUserByEmail(email);
+	}
+	
+	@PutMapping("/updatePassword")
+	public ApiResponse updateForgotPassword(@RequestBody @Valid CredentialsRequestDto userDto) {
+		return userService.updateForgotPasswordOfUser(userDto);
+	}
 
+	
+	
 }
