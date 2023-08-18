@@ -1,9 +1,5 @@
 package com.app.dto;
 
-import com.app.entities.ServiceLocationEntity;
-import com.app.entities.VehicleBrand;
-import com.app.entities.VehicleType;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

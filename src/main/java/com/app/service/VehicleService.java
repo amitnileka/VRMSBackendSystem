@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.app.dto.AddVehicalDto;
 import com.app.dto.ApiResponse;
@@ -14,7 +15,17 @@ public interface VehicleService {
 	
 	public ApiResponse deleteVehicle(Long id);
 	
-	public List<VehicleResponseDto> getAllVehicles(); 
+	public List<VehicleResponseDto> getAllVehicles();
+	
+	public List<VehicleResponseDto> getAvailableVehicles();
+	
+	public List<VehicleResponseDto> getReservedVehicles();
+	
+	public Set<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id);
+
+	
+	public VehicleResponseDto getVehicleById(Long vehicleId);
 	
 	public ApiResponse updateVehicle(UpdateVehicleDto vehicleDto);
+	
 }

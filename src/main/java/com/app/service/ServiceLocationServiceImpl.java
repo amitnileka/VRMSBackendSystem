@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.app.dao.ServiceLocationRepository;
 import com.app.dto.ApiResponse;
 import com.app.dto.ServiceLocationDto;
+import com.app.dto.ServiceLocationResponseDto;
 import com.app.entities.ServiceLocationEntity;
 
 @Service
@@ -47,12 +48,12 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 	
 	
 	@Override
-	public List<ServiceLocationDto> getAllLocations() {
+	public List<ServiceLocationResponseDto> getAllLocations() {
 	
 		List<ServiceLocationEntity> serviceLocations = locationRepository.findAll();
 		
-		List<ServiceLocationDto> serviceLocationDtos = serviceLocations.stream() //Stream<Emp>
-				.map(service -> mapper.map(service, ServiceLocationDto.class)) //Stream<DTO>
+		List<ServiceLocationResponseDto> serviceLocationDtos = serviceLocations.stream() //Stream<Emp>
+				.map(service -> mapper.map(service, ServiceLocationResponseDto.class)) //Stream<DTO>
 				.collect(Collectors.toList());
 		
 		

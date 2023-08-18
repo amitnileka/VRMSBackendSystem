@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -23,7 +24,7 @@ import com.app.service.VehicleService;
 
 
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("/vehicles")
 public class VehicleController {
 
 	@Autowired
@@ -41,10 +42,35 @@ public class VehicleController {
 		return vehicleService.deleteVehicle(id);
 	}
 	
-	@GetMapping
+	@GetMapping("/all")
 	public List<VehicleResponseDto> getAllVehicles(){
 		
 		return vehicleService.getAllVehicles();
+	}
+	
+	@GetMapping("/by_location/{id}")
+	public Set<VehicleResponseDto> getAllVehiclesByLocation(@PathVariable Long id){
+		
+		return vehicleService.getAllVehiclesByServiceLocation(id);
+	}
+	
+	@GetMapping("/available_vehicles")
+	public List<VehicleResponseDto> getAvailableVehicle(){
+		
+		return vehicleService.getAvailableVehicles();
+	}
+	
+	@GetMapping("/reserved_vehicles")
+	public List<VehicleResponseDto> getReservedVehicle(){
+		
+		return vehicleService.getReservedVehicles();
+	}
+	
+	
+	@GetMapping("/{id}")
+	public VehicleResponseDto getVehicleById(@PathVariable Long id){
+		
+		return vehicleService.getVehicleById(id);
 	}
 	
 	@PutMapping
