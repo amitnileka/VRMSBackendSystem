@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AddBookingDto;
+import com.app.dto.AddFeedbackToBookingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.BookingDto;
 import com.app.dto.BookingResponseDto;
+import com.app.dto.BookingWithFeedbackDto;
 import com.app.dto.CancelBookingDto;
 import com.app.service.BookingService;
 
@@ -48,9 +51,21 @@ public class BookingController {
 		return bookingService.getAllBookings();
 	}
 	
+	@GetMapping("/allbookingswithfeedback")
+	public List<BookingWithFeedbackDto> getAllBookingsWithFeedback(){
+		
+		return bookingService.getAllBookingsWithFeedback();
+	}
+	
+	@PutMapping("/addfeedbacktobooking/{bookingId}")
+	public ApiResponse addFeedbackToBooking(@RequestBody @Valid AddFeedbackToBookingDto addFeedbackToBookingDto ) {
+		return bookingService.addFeedbackToBooking(addFeedbackToBookingDto);
+	}
+	
 	@DeleteMapping("/cancel_booking")
 	public ApiResponse cancelBooking(@RequestBody @Valid CancelBookingDto cancelBookingDto) {
 		return bookingService.cancelBooking(cancelBookingDto);
 	}
+	
 	
 }
