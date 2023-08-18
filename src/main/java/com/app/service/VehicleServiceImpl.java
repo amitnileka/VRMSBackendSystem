@@ -1,6 +1,8 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -70,7 +72,9 @@ public class VehicleServiceImpl implements VehicleService {
 	public ApiResponse deleteVehicle(Long id) {
 		
 		Vehicle vehicle = vehicleRepo.findById(id).orElseThrow(()-> new RuntimeException("vehicle not found"));
-		ServiceLocationEntity location = serviceLocationRepo.findById(vehicle.getServiceLocation().getId()).orElseThrow(()-> new RuntimeException("location not found"));
+		ServiceLocationEntity location = serviceLocationRepo.
+				findById(vehicle.getServiceLocation().getId())
+				.orElseThrow(()-> new RuntimeException("location not found"));
 		//vehicleRepo.delete(vehicle);
 		
 		location.removeVehicle(vehicle);
@@ -82,8 +86,7 @@ public class VehicleServiceImpl implements VehicleService {
 	public List<VehicleResponseDto> getAllVehicles() {
 		List<Vehicle> vehicleList = vehicleRepo.findAll();
 		
-		vehicleList.forEach(v-> System.out.println(v.getServiceLocation()));
-	
+		
 		List<VehicleResponseDto> vehicleListResponse = vehicleList.stream() //Stream<Emp>
 		.map(vehicle -> mapper.map(vehicle, VehicleResponseDto.class)) //Stream<DTO>
 		.collect(Collectors.toList());
@@ -91,10 +94,51 @@ public class VehicleServiceImpl implements VehicleService {
 		for(int i=0;i<vehicleList.size();i++) {
 			vehicleListResponse.get(i).setLocation(mapper.map(vehicleList.get(i).getServiceLocation(), ServiceLocationResponseDto.class));
 		}
-		vehicleListResponse.forEach(v-> System.out.println(v.getLocation()));
 		
 		return vehicleListResponse;
 	
+	}
+	
+	@Override
+	public List<VehicleResponseDto> getAvailableVehicles() {
+		
+		return getAllVehicles().stream()
+				.filter(vehicle -> vehicle.getStatus().equalsIgnoreCase("Available"))
+				.collect(Collectors.toList());
+		
+	}
+	
+	@Override
+	public List<VehicleResponseDto> getReservedVehicles() {
+		return getAllVehicles().stream()
+		.filter(vehicle -> vehicle.getStatus().equalsIgnoreCase("NotAvailable"))
+		.collect(Collectors.toList());
+	}
+	
+	@Override
+	public Set<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id) {
+		
+		ServiceLocationEntity location = serviceLocationRepo.findById(id)
+										.orElseThrow(()-> new RuntimeException("Service Location not found"));
+		
+		Set<Vehicle> vehicleList = location.getVehicleSet();
+		
+		
+		return  vehicleList.stream() 
+				.filter(vehicle-> vehicle.getStatus().equalsIgnoreCase("Available"))
+				.map(vehicle -> mapper.map(vehicle, VehicleResponseDto.class)) //Stream<DTO>
+		.collect(Collectors.toSet());
+	
+	}
+	
+	@Override
+	public VehicleResponseDto getVehicleById(Long vehicleId) {
+		Vehicle vehicle = vehicleRepo.findById(vehicleId)
+										.orElseThrow(()-> new RuntimeException("Vehicle not found"));
+		
+		VehicleResponseDto vehicleResponse = mapper.map(vehicle, VehicleResponseDto.class);
+		
+		return vehicleResponse;
 	}
 	
 	@Override
@@ -117,8 +161,6 @@ public class VehicleServiceImpl implements VehicleService {
 			oldLocation.removeVehicle(vehicle);
 			newLocation.addVehicle(vehicle);
 		}
-		
-		
 		
 		return new ApiResponse("vehicle updated");
 	}

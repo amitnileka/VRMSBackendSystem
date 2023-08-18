@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.ApiResponse;
 import com.app.dto.ServiceLocationDto;
+import com.app.dto.ServiceLocationResponseDto;
 import com.app.entities.ServiceLocationEntity;
 import com.app.service.ServiceLocationService;
 
@@ -45,7 +46,7 @@ public class ServiceLocationController {
 	}
 	
 	@GetMapping
-	public List<ServiceLocationDto> getAllLocations(){
+	public List<ServiceLocationResponseDto> getAllLocations(){
 		
 		return locationService.getAllLocations();
 		
