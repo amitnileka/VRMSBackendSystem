@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 public class AddBookingDto {
 
-	private LocalDate bookDate;
+	
 	private LocalDate startDate;
 	private LocalDate endDate;
 	
@@ -26,6 +26,6 @@ public class AddBookingDto {
 	private Double totalAmount;
 	
 	
-	private String status;
+	
 	private Long vehicleId;
 }

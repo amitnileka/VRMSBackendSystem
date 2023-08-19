@@ -15,8 +15,10 @@ import lombok.ToString;
 @ToString
 public class AddPaymentDto {
   
-	private String paymentStatus;
-	private double paymentAmount;
-	private LocalDate timestamp;
+	private String cardNo;
+	private String cardHolderName;
+	private String cvv;
+	private String expiryDate;
+	private Double paymentAmount;
 	private Long bookingId;
 }
