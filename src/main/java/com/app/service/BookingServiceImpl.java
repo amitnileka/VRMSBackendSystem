@@ -63,6 +63,8 @@ public class BookingServiceImpl implements BookingService {
 		vehicle.setStatus("NotAvailable");
 		booking.setVehicle(vehicle);
 		booking.setUsers(users);
+		booking.setBookDate(LocalDate.now());
+		booking.setStatus("Pending");
 		
 		
 		BookingDetailsEntity bookingEntity= bookingRepo.save(booking);
@@ -133,13 +135,15 @@ public class BookingServiceImpl implements BookingService {
 	public List<BookingWithFeedbackDto> getAllBookingsWithFeedback() {
 		// TODO Auto-generated method stub
 		List<BookingDetailsEntity> bookingEntities=bookingRepo.findAll();
-		List<BookingWithFeedbackDto> bookingDto=bookingEntities.stream().map(booking-> mapper.map(booking, BookingWithFeedbackDto.class)).collect(Collectors.toList());
+		List<BookingWithFeedbackDto> bookingDto=bookingEntities.
+				stream()
+				.map(booking-> mapper.map(booking, BookingWithFeedbackDto.class)).collect(Collectors.toList());
 		
 		for(int i=0;i<bookingEntities.size();i++) {
 			bookingDto.get(i).setUser(mapper.map(bookingEntities.get(i).getUsers(), ProfileDto.class));
 		}
 		
-		return bookingDto;
+		return bookingDto.stream().filter(booking-> booking.getBookingFeedback() !=null).collect(Collectors.toList());
 	}
 	
 	@Override

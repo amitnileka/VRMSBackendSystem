@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.dao.BookingRepository;
 import com.app.dao.ServiceLocationRepository;
 import com.app.dao.VehicleBrandRepository;
 import com.app.dao.VehicleRepository;
@@ -21,6 +22,7 @@ import com.app.dto.ServiceLocationDto;
 import com.app.dto.ServiceLocationResponseDto;
 import com.app.dto.UpdateVehicleDto;
 import com.app.dto.VehicleResponseDto;
+import com.app.entities.BookingDetailsEntity;
 import com.app.entities.ServiceLocationEntity;
 import com.app.entities.Vehicle;
 import com.app.entities.VehicleBrand;
@@ -44,6 +46,8 @@ public class VehicleServiceImpl implements VehicleService {
 	@Autowired
 	private VehicleTypeRepository vehicleTypeRepo;
 	
+	@Autowired
+	private BookingRepository bookingRepo;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -56,11 +60,11 @@ public class VehicleServiceImpl implements VehicleService {
 		VehicleBrand vehicleBrand = vehicleBrandRepo.findById(vehicleDto.getBrandId()).orElseThrow(()->new RuntimeException("Brand not found"));
 		VehicleType vehicleType = vehicleTypeRepo.findById(vehicleDto.getTypeId()).orElseThrow(()->new RuntimeException("Type not found"));
 		
-		
+				
 		Vehicle vehicle = mapper.map(vehicleDto, Vehicle.class);
 		vehicle.setBrand(vehicleBrand);
 		vehicle.setType(vehicleType);
-		
+		vehicle.setStatus("Available");
 		location.addVehicle(vehicle);
 		
 		
@@ -76,6 +80,13 @@ public class VehicleServiceImpl implements VehicleService {
 				findById(vehicle.getServiceLocation().getId())
 				.orElseThrow(()-> new RuntimeException("location not found"));
 		//vehicleRepo.delete(vehicle);
+		
+		List<BookingDetailsEntity> booking = bookingRepo.findByVehicle(vehicle)
+										.orElseThrow(()-> new RuntimeException("booking not found"));
+	
+		
+		booking.forEach(v-> v.setVehicle(null)); 
+		
 		
 		location.removeVehicle(vehicle);
 		return new ApiResponse("vehicle deleted");
