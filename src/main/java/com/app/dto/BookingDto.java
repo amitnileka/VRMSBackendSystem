@@ -18,6 +18,7 @@ import lombok.ToString;
 public class BookingDto {
 	private Long id;
 
+	
 	private LocalDate bookDate;
 	private LocalDate startDate;
 	private LocalDate endDate;
