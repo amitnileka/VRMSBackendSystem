@@ -36,7 +36,7 @@ public class VehicleBrand extends BaseEntity {
 	
 	
 	
-	private long pricingPerKm;
+	private Long pricingPerKm;
 	
 	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<Vehicle> vehicleList = new HashSet<>();

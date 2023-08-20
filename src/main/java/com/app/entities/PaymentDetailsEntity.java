@@ -24,7 +24,7 @@ public class PaymentDetailsEntity extends BaseEntity {
 
 	@Column(length=30)
 	private String paymentStatus;
-	private double paymentAmount;
+	private Double paymentAmount;
 	private LocalDate timestamp;
 	
 	

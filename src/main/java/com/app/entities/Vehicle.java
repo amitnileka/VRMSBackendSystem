@@ -35,6 +35,7 @@ public class Vehicle extends BaseEntity{
 	@Column(length=30)
 	private String status;
 	
+	private String imagePath;
 	@ManyToOne
 	@JoinColumn(name = "type_id")
 	private VehicleType type;
