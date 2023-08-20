@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<ProfileDto> getUsers() {
 		List<UserEntity> userList = userRepo.findAll();
-		
+		 
 		List<ProfileDto> usersDto = userList.stream().
 				map(userEntity -> mapper.map(userEntity,ProfileDto.class))
 				.collect(Collectors.toList());

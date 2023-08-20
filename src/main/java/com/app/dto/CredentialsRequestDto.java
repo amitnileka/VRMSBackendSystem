@@ -16,10 +16,11 @@ import lombok.ToString;
 @ToString
 public class CredentialsRequestDto {
 	
-//	@NotBlank(message = "Email can't be blank")
-//	@Email(message = "Invalid email format")
+	@NotBlank(message = "Should enter email")
+	@Email(message = "Invalid email format")
 	private String email;
-////	@NotBlank
-//	@Length(min = 5,max=20,message = "Invalid password length")
+	
+	@NotBlank(message = "Should enter password")
+	@Length(min = 5,max=20,message = "Should enter strong password")
 	private String password;
 }
