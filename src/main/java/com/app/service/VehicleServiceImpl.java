@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collector;
@@ -50,6 +51,9 @@ public class VehicleServiceImpl implements VehicleService {
 	private BookingRepository bookingRepo;
 	
 	@Autowired
+	private ImageHandlingService imgService;
+	
+	@Autowired
 	private ModelMapper mapper;
 	
 	@Override
@@ -94,7 +98,7 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 	
 	@Override
-	public List<VehicleResponseDto> getAllVehicles() {
+	public List<VehicleResponseDto> getAllVehicles()throws IOException {
 		List<Vehicle> vehicleList = vehicleRepo.findAll();
 		
 		
@@ -102,8 +106,11 @@ public class VehicleServiceImpl implements VehicleService {
 		.map(vehicle -> mapper.map(vehicle, VehicleResponseDto.class)) //Stream<DTO>
 		.collect(Collectors.toList());
 		
+	
+		
 		for(int i=0;i<vehicleList.size();i++) {
 			vehicleListResponse.get(i).setLocation(mapper.map(vehicleList.get(i).getServiceLocation(), ServiceLocationResponseDto.class));
+			vehicleListResponse.get(i).setImageFile(imgService.downloadImage(vehicleList.get(i).getId()));
 		}
 		
 		return vehicleListResponse;
@@ -111,7 +118,7 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 	
 	@Override
-	public List<VehicleResponseDto> getAvailableVehicles() {
+	public List<VehicleResponseDto> getAvailableVehicles()throws IOException {
 		
 		return getAllVehicles().stream()
 				.filter(vehicle -> vehicle.getStatus().equalsIgnoreCase("Available"))
@@ -120,14 +127,14 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 	
 	@Override
-	public List<VehicleResponseDto> getReservedVehicles() {
+	public List<VehicleResponseDto> getReservedVehicles()throws IOException {
 		return getAllVehicles().stream()
 		.filter(vehicle -> vehicle.getStatus().equalsIgnoreCase("NotAvailable"))
 		.collect(Collectors.toList());
 	}
 	
 	@Override
-	public Set<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id) {
+	public List<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id)throws IOException {
 		
 		ServiceLocationEntity location = serviceLocationRepo.findById(id)
 										.orElseThrow(()-> new RuntimeException("Service Location not found"));
@@ -135,19 +142,26 @@ public class VehicleServiceImpl implements VehicleService {
 		Set<Vehicle> vehicleList = location.getVehicleSet();
 		
 		
-		return  vehicleList.stream() 
-				.filter(vehicle-> vehicle.getStatus().equalsIgnoreCase("Available"))
-				.map(vehicle -> mapper.map(vehicle, VehicleResponseDto.class)) //Stream<DTO>
-		.collect(Collectors.toSet());
+		List<VehicleResponseDto> vehicleResponseList = vehicleList.stream() 
+											.filter(vehicle-> vehicle.getStatus().equalsIgnoreCase("Available"))
+											.map(vehicle -> mapper.map(vehicle, VehicleResponseDto.class)) //Stream<DTO>
+											.collect(Collectors.toList());
+//		vehicleResponseList.forEach(vehicle -> vehicle.setImageFile(imgService.downloadImage(vehicle.getId())));
+		for(int i=0;i<vehicleResponseList.size();i++) {
+			vehicleResponseList.get(i).setImageFile(imgService.downloadImage(vehicleResponseList.get(i).getId()));
+		}
+		
+		return vehicleResponseList;
 	
 	}
 	
 	@Override
-	public VehicleResponseDto getVehicleById(Long vehicleId) {
+	public VehicleResponseDto getVehicleById(Long vehicleId)throws IOException {
 		Vehicle vehicle = vehicleRepo.findById(vehicleId)
 										.orElseThrow(()-> new RuntimeException("Vehicle not found"));
 		
 		VehicleResponseDto vehicleResponse = mapper.map(vehicle, VehicleResponseDto.class);
+		vehicleResponse.setImageFile(imgService.downloadImage(vehicleResponse.getId()));
 		
 		return vehicleResponse;
 	}

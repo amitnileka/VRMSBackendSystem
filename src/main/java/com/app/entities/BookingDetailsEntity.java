@@ -28,10 +28,10 @@ public class BookingDetailsEntity extends BaseEntity {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	
-	private double amount;
-	private double extraCharge;
+	private Double amount;
+	private Double extraCharge;
 	
-	private double totalAmount;
+	private Double totalAmount;
 	
 	@Column(length = 20)
 	private String status;

@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -15,16 +16,16 @@ public interface VehicleService {
 	
 	public ApiResponse deleteVehicle(Long id);
 	
-	public List<VehicleResponseDto> getAllVehicles();
+	public List<VehicleResponseDto> getAllVehicles()throws IOException;
 	
-	public List<VehicleResponseDto> getAvailableVehicles();
+	public List<VehicleResponseDto> getAvailableVehicles()throws IOException;
 	
-	public List<VehicleResponseDto> getReservedVehicles();
+	public List<VehicleResponseDto> getReservedVehicles()throws IOException;
 	
-	public Set<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id);
+	public List<VehicleResponseDto> getAllVehiclesByServiceLocation(Long id)throws IOException;
 
 	
-	public VehicleResponseDto getVehicleById(Long vehicleId);
+	public VehicleResponseDto getVehicleById(Long vehicleId)throws IOException;
 	
 	public ApiResponse updateVehicle(UpdateVehicleDto vehicleDto);
 	

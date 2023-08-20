@@ -17,12 +17,12 @@ import lombok.Setter;
 @Setter
 public class BankDetailsEntity extends BaseEntity{
 
-@Column(length= 15, unique = true)
-private String cardNo;
-@Column(length= 30, unique = true)
-private String cardHolderName;
-@Column(length= 3, unique = true)
-private String cvv;
-@Column(length= 15, unique = true)
-private String expiryDate;
+	@Column(length= 15, unique = true)
+	private String cardNo;
+	@Column(length= 30, unique = true)
+	private String cardHolderName;
+	@Column(length= 3, unique = true)
+	private String cvv;
+	@Column(length= 15, unique = true)
+	private String expiryDate;
 }
