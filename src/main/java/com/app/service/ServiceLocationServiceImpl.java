@@ -69,8 +69,8 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 	
 		List<ServiceLocationEntity> serviceLocations = locationRepository.findAll();
 		
-		List<ServiceLocationResponseDto> serviceLocationDtos = serviceLocations.stream() //Stream<Emp>
-				.map(service -> mapper.map(service, ServiceLocationResponseDto.class)) //Stream<DTO>
+		List<ServiceLocationResponseDto> serviceLocationDtos = serviceLocations.stream() 
+				.map(service -> mapper.map(service, ServiceLocationResponseDto.class)) 
 				.collect(Collectors.toList());
 		
 		
