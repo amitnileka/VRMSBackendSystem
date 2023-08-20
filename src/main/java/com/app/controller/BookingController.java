@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -65,6 +66,12 @@ public class BookingController {
 	@DeleteMapping("/cancel_booking")
 	public ApiResponse cancelBooking(@RequestBody @Valid CancelBookingDto cancelBookingDto) {
 		return bookingService.cancelBooking(cancelBookingDto);
+	}
+	
+	@PostMapping("/yearly_revenue")
+	public Double getYearlyRevenue(@RequestBody Integer year) throws SQLException {
+		
+		return bookingService.getYearlyRevenue(year);
 	}
 	
 	

@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.app.dto.AddBookingDto;
@@ -19,4 +21,6 @@ public interface BookingService {
 	public List<BookingWithFeedbackDto> getAllBookingsWithFeedback();
 	
 	public ApiResponse addFeedbackToBooking(AddFeedbackToBookingDto addFeedbackToBookingDto);
+	
+	public Double getYearlyRevenue(Integer year) throws SQLException;
 }

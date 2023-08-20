@@ -1,6 +1,9 @@
 package com.app.service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -154,5 +157,20 @@ public class BookingServiceImpl implements BookingService {
 		
 		return new ApiResponse("Feedback added!!");
 	}
+	
+	@Override
+	public Double getYearlyRevenue(Integer year) throws SQLException {
+		// TODO Auto-generated method stub
+		
+//		if(bookingRepo.findRevenueByYear(year).next() {
+//			Double amount=bookingRepo.findRevenueByYear(year).getDouble(0);
+//			System.out.println(amount);
+//			return amount;
+//		}
+//		return 0.0;
+		
+		
+		return bookingRepo.findRevenueByYear(year);
 
+}
 }
