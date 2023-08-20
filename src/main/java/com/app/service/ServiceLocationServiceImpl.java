@@ -9,11 +9,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.dao.BookingRepository;
 import com.app.dao.ServiceLocationRepository;
 import com.app.dto.ApiResponse;
 import com.app.dto.ServiceLocationDto;
 import com.app.dto.ServiceLocationResponseDto;
+import com.app.entities.BookingDetailsEntity;
 import com.app.entities.ServiceLocationEntity;
+import com.app.entities.Vehicle;
 
 @Service
 @Transactional
@@ -25,6 +28,9 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 	@Autowired
 	private ModelMapper mapper;
 	
+	@Autowired
+	private BookingRepository bookingRepo;
+	
 	@Override
 	public ApiResponse addServiceLocation(ServiceLocationDto locationDto) {
 		
@@ -35,12 +41,23 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 		return new ApiResponse("location added");
 	}
 	
+	public void deleteBookingForVehicle(Vehicle vehicle) {
+		
+		List<BookingDetailsEntity> booking = bookingRepo.findByVehicle(vehicle)
+				.orElseThrow(()-> new RuntimeException("booking not found"));
+
+
+		booking.forEach(v-> v.setVehicle(null)); 
+		
+	}
 	
 	@Override
 	public ApiResponse deleteServiceLocation(Long id) {
 	
 		ServiceLocationEntity location = locationRepository.findById(id).orElseThrow(()-> new RuntimeException("location not found"));
 
+		location.getVehicleSet().forEach(v-> deleteBookingForVehicle(v));
+		
 		locationRepository.delete(location);
 		
 		return new ApiResponse("location deleted");
