@@ -17,6 +17,7 @@ import com.app.dto.CredentialsRequestDto;
 import com.app.dto.CredentialsResponseDto;
 import com.app.dto.ProfileDto;
 import com.app.entities.UserEntity;
+import com.app.jwt_utils.JwtUtils;
 
 
 @Service
@@ -28,6 +29,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	private JwtUtils utils;
+	
 	
 	@Override
 	public ApiResponse addUser(RegisterUserDto userDto) {
@@ -46,8 +51,8 @@ public class UserServiceImpl implements UserService {
 		UserEntity user = userRepo.findByEmailAndPassword(email, password)
 				.orElseThrow(()-> new RuntimeException("Invalid User Email or Password"));
 		
-		return user != null ? new CredentialsResponseDto(user.getId(),"jwt","Sign In Successfull") : 
-			new CredentialsResponseDto(null,"Nojwt","Sign In Unsuccessfull");
+		return user != null ? new CredentialsResponseDto(user.getId(),utils.generateJwtToken(loginUserDto),"Sign In Successfull") : 
+			new CredentialsResponseDto(null,null,"Sign In Unsuccessfull");
 	}
 	
 	@Override
