@@ -10,6 +10,7 @@ import com.app.dto.ApiResponse;
 import com.app.dto.CredentialsRequestDto;
 import com.app.dto.CredentialsResponseDto;
 import com.app.entities.AdminEntity;
+import com.app.jwt_utils.JwtUtils;
 
 
 @Service
@@ -18,6 +19,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private AdminRepository adminRepo;
+	@Autowired
+	private JwtUtils utils;
 	
 	@Override
 	public CredentialsResponseDto getValidAdmin(CredentialsRequestDto loginAdminDto) {
@@ -26,8 +29,8 @@ public class AdminServiceImpl implements AdminService {
 		AdminEntity admin = adminRepo.findByEmailAndPassword(email, password)
 										.orElseThrow(()-> new RuntimeException("Invalid Admin Email or Password"));
 		
-		return admin != null ? new CredentialsResponseDto(admin.getId(),"jwt","Sign In Successfull") : 
-			new CredentialsResponseDto(null,"Nojwt","Sign In Unsuccessfull");
+		return admin != null ? new CredentialsResponseDto(admin.getId(),utils.generateJwtToken(loginAdminDto),"Sign In Successfull") : 
+			new CredentialsResponseDto(null,null,"Sign In Unsuccessfull");
 		
 	}
 	

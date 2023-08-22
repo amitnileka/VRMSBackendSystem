@@ -104,7 +104,7 @@ public class VehicleController {
 	// http://host:port/vehicles/images/{vehicleId} , method=GET
 	@GetMapping(value="/images/{vehicleId}",produces = {IMAGE_GIF_VALUE,
 			IMAGE_JPEG_VALUE,IMAGE_PNG_VALUE})
-	public byte[] serveVehicleImage(@PathVariable Long vehicleId) throws IOException {
+	public String serveVehicleImage(@PathVariable Long vehicleId) throws IOException {
 		System.out.println("in download img " + vehicleId);
 		return imgService.downloadImage(vehicleId);
 	}
