@@ -28,5 +28,7 @@ public interface VehicleService {
 	public VehicleResponseDto getVehicleById(Long vehicleId)throws IOException;
 	
 	public ApiResponse updateVehicle(UpdateVehicleDto vehicleDto);
+	public List<VehicleBrandDto> getAllVehicleBrands();
 	
+	public List<VehicleTypeDto> getAllVehicleTypes();
 }
