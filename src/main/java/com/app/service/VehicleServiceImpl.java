@@ -189,6 +189,31 @@ public class VehicleServiceImpl implements VehicleService {
 		
 		return new ApiResponse("vehicle updated");
 	}
+
+	@Override
+	public List<VehicleBrandDto> getAllVehicleBrands() {
+		
+		List<VehicleBrand> vehicleBrandList = vehicleBrandRepo.findAll();
+		
+		
+		List<VehicleBrandDto> vehicleListResponse = vehicleBrandList.stream() //Stream<Emp>
+		.map(vehicle -> mapper.map(vehicle, VehicleBrandDto.class)) //Stream<DTO>
+		.collect(Collectors.toList());
+		
+		return vehicleListResponse;
+	}
+	
+	@Override
+	public List<VehicleTypeDto> getAllVehicleTypes() {
+		List<VehicleType> vehicleTypeList = vehicleTypeRepo.findAll();
+		
+		
+		List<VehicleTypeDto> vehicleListResponse = vehicleTypeList.stream() //Stream<Emp>
+		.map(vehicle -> mapper.map(vehicle, VehicleTypeDto.class)) //Stream<DTO>
+		.collect(Collectors.toList());
+		
+		return vehicleListResponse;
+	}
 	
 	
 }
