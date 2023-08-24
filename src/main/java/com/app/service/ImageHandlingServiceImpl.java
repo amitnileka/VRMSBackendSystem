@@ -66,6 +66,7 @@ public class ImageHandlingServiceImpl implements ImageHandlingService {
 		Vehicle vehicle = vehicleRepo.findById(vehicleId).orElseThrow(() -> new RuntimeException("Invalid vehicle ID!!!!"));
 		// vehicle found --> PERSISTENT
 		String path = vehicle.getImagePath();
+		//System.out.println(path);
 		if (path != null) {
 			// path ---> File --> byte[]
 			return FileUtils.readFileToByteArray(new File(path));

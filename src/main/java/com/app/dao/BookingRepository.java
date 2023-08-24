@@ -15,7 +15,7 @@ public interface BookingRepository extends JpaRepository<BookingDetailsEntity, L
 	Optional<List<BookingDetailsEntity>> findByVehicle(Vehicle v);
 
 	@Query(
-	value="select sum(amount) from booking_details where status='successful' and year(book_date)= :year group by status",
+	value="select sum(total_amount) from booking_details where status='Pending' and year(book_date)= :year group by status",
 	nativeQuery=true)
 	
 	//@Query(value="select sum(b.amount) from booking_details b where b.status='successful' and year(b.book_date)= :year group by b.status")
